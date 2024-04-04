@@ -1,1 +1,39 @@
+use std::io;
 
+#[derive(Debug)]
+pub struct TreeNode {
+    pub val: i32,
+    pub left: Option<Box<TreeNode>>,
+    pub right: Option<Box<TreeNode>>,
+}
+
+impl TreeNode {
+    #[inline]
+    pub fn new(val: i32) -> Self {
+        TreeNode { val, left: None, right: None }
+    }
+}
+
+fn max_depth(root: Option<Box<TreeNode>>) -> i32 {
+    match root {
+        Some(node) => {
+            let left_depth = max_depth(node.left);
+            let right_depth = max_depth(node.right);
+            1 + left_depth.max(right_depth)
+        }
+        None => 0,
+    }
+}
+
+fn main() {
+    println!("Enter the value of the root node:");
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to read line");
+    let root = Some(Box::new(TreeNode {
+        val: input.trim().parse().expect("Invalid input"),
+        left: None,
+        right: None,
+    }));
+
+    println!("Maximum depth of the tree: {}", max_depth(root));
+}
