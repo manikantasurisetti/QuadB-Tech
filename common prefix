@@ -1,1 +1,41 @@
+use std::io;
+
+fn longest_common_prefix(strings: Vec<String>) -> String {
+    if strings.is_empty() {
+        return String::new();
+    }
+
+    let first_str = &strings[0];
+    let mut prefix = String::new();
+
+    'outer: for (i, c) in first_str.chars().enumerate() {
+        for s in strings.iter().skip(1) {
+            if let Some(curr_char) = s.chars().nth(i) {
+                if curr_char != c {
+                    break 'outer;
+                }
+            } else {
+                break 'outer;
+            }
+        }
+        prefix.push(c);
+    }
+
+    prefix
+}
+
+fn main() {
+    println!("Enter strings separated by spaces:");
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to read line");
+
+    let strings: Vec<String> = input
+        .trim()
+        .split_whitespace()
+        .map(|s| s.to_string())
+        .collect();
+
+    let prefix = longest_common_prefix(strings);
+    println!("Longest common prefix: {}", prefix);
+}
 
